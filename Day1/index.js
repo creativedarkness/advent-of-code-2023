@@ -20,19 +20,21 @@ exports.partOne = function (file) {
   return sum
 }
 
+// console.log(this.partOne('input.txt'))
+
 const numbersMap = {
-  on: 1,
-  tw: 2,
-  th: 3,
-  fo: 4,
-  fi: 5,
-  si: 6,
-  se: 7,
-  ei: 8,
-  ni: 9
+  one: 1,
+  two: 2,
+  three: 3,
+  four: 4,
+  five: 5,
+  six: 6,
+  seven: 7,
+  eight: 8,
+  nine: 9
 }
 
-const searchTerms = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+const wordDigits = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
 
 // two1nine // two 1 nine
 // eightwothree // eight two three
@@ -40,32 +42,49 @@ const searchTerms = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eig
 // xtwone3four // two one 3 four
 // 4nineeightseven2 // four nine eight seven 2
 // zoneight234 // one eight 2 3 4
-// 7pqrstsixteen // 7 six sixteen
+// 7pqrstsixteen // 7 six
 
 exports.partTwo = function (file) {
   const input = fs.readFileSync(path.resolve(__dirname, `./${file}`), 'utf-8').toString().split('\n') // read file and split by line
-  let sum = 0
 
-  // input.forEach((line) => {
-  //   const digits = line.split('').map(Number).filter(Boolean) // split each line into an array of digits
-  //   const first = digits[0]
-  //   const last = digits[digits.length - 1]
+  input.forEach(line => {
+    let first
+    let last
 
-  //   sum += parseInt(`${first}${last}`)
-  // })
+    for (let i = 0; i <= line.length; i++) {
+      const num = parseInt(line[i], 10)
+      const digitAtIndex = !isNaN(num)
+        ? num
+        : getNamedDigitsAtIndex(line, i)
 
-  input.forEach((line) => {
-    const words = line.split(' ')
-    const numbers = words.filter((word) => {
-      return numbersMap[word]
-    })
-    const first = numbers[0]
-    const last = numbers[numbers.length - 1]
-    console.log(words, numbers)
-    sum += parseInt(`${first}${last}`)
+      console.log({ num, digitAtIndex, first, last })
+
+      if (digitAtIndex) {
+        if (!first) {
+          first = digitAtIndex
+        } else {
+          last = digitAtIndex
+        }
+      }
+    }
+
+    if (!last) {
+      last = first
+    }
+
+    return parseInt(`${first}${last}`, 10) || 0
   })
-
-  return sum
 }
 
-// console.log(exports.partOne('partOneInput.txt'))
+function getNamedDigitsAtIndex (line, index) {
+  const restOfLine = line.slice(index)
+
+  for (const namedDigit of wordDigits) {
+    if (restOfLine.startsWith(namedDigit)) {
+      return wordDigits.indexOf(namedDigit) + 1
+    }
+  }
+  return false
+}
+
+// console.log(this.partTwo('input.txt'))
