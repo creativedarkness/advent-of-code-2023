@@ -11,12 +11,12 @@ describe('Day 1', () => {
     })
   })
 
-  // describe.only('partTwo', () => {
-  //   it('returns the sum of five powers', () => {
-  //     const expected = 2286
-  //     const actual = partTwo('testData.txt')
+  describe.only('partTwo', () => {
+    it('returns the sum of five powers', () => {
+      const expected = 2286
+      const actual = partTwo('testData.txt')
 
-  //     expect(actual).toEqual(expected)
-  //   })
-  // })
+      expect(actual).toEqual(expected)
+    })
+  })
 })

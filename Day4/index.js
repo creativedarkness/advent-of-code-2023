@@ -4,20 +4,37 @@ const path = require('path')
 exports.partOne = function (file) {
   const input = fs.readFileSync(path.resolve(__dirname, `./${file}`), 'utf-8').trim().split('\n')
 
-  return input.forEach((line, i) => {
-    const scratchcards = line.split(`Card ${i + 1}: `).filter(Boolean)
-    return scratchcards.map(scratchcard => {
-      const games = scratchcard.split('|').map((game, i) => {
-        if (game[i][i] === game[i = 1][i]) return game[i + 1][i]
-        return console.log({ i, game })
-      })
-      // console.log(games)
-      return games
+  function toDict (numbers) {
+    return numbers.reduce((acc, num) => {
+      acc[num] = true
+      return acc
+    }, {})
+  }
+
+  return input.map(line => {
+    const cards = line.split(':')[1]
+    const [winners, numbers] = cards.split('|')
+    const wData = winners.split(' ').filter(x => x)
+    const wDict = toDict(wData.map(num => parseInt(num.trim())))
+
+    return [wDict, numbers.split(' ').map(num => parseInt(num))]
+  }).reduce((acc, [wDict, numbers]) => {
+    let points = 0
+
+    numbers.forEach(x => {
+      if (wDict[x]) {
+        if (points === 0) {
+          points = 1
+        } else {
+          points <<= 1
+        }
+      }
     })
-  })
+    return acc + points
+  }, 0)
 }
 
-// console.log(this.partOne('input.txt'))
+console.log(this.partOne('input.txt'))
 
 // exports.partTwo = function (file) {
 //   const input = fs.readFileSync(path.resolve(__dirname, `./${file}`), 'utf-8').toString().split('\n')

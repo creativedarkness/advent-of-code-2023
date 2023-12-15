@@ -54,4 +54,4 @@ exports.partTwo = function (file) {
   }).reduce((sum, value) => sum + value)
 }
 
-console.log(this.partTwo('input.txt'))
+// console.log(this.partTwo('input.txt'))

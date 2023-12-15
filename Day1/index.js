@@ -57,7 +57,7 @@ exports.partTwo = function (file) {
         ? num
         : getNamedDigitsAtIndex(line, i)
 
-      console.log({ num, digitAtIndex, first, last })
+      // console.log({ num, digitAtIndex, first, last })
 
       if (digitAtIndex) {
         if (!first) {
