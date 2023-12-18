@@ -19,5 +19,4 @@ describe('Day 1', () => {
       expect(actual).toEqual(expected)
     })
   })
-
 })

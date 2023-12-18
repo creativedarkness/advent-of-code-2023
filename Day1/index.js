@@ -22,69 +22,34 @@ exports.partOne = function (file) {
 
 // console.log(this.partOne('input.txt'))
 
-const numbersMap = {
-  one: 1,
-  two: 2,
-  three: 3,
-  four: 4,
-  five: 5,
-  six: 6,
-  seven: 7,
-  eight: 8,
-  nine: 9
-}
-
-const wordDigits = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
-
-// two1nine // two 1 nine
-// eightwothree // eight two three
-// abcone2threexyz // one 2 three
-// xtwone3four // two one 3 four
-// 4nineeightseven2 // four nine eight seven 2
-// zoneight234 // one eight 2 3 4
-// 7pqrstsixteen // 7 six
-
 exports.partTwo = function (file) {
-  const input = fs.readFileSync(path.resolve(__dirname, `./${file}`), 'utf-8').toString().split('\n') // read file and split by line
+  const input = fs.readFileSync(path.resolve(__dirname, `./${file}`), 'utf-8').split('\n') // read file and split by line
 
-  input.forEach(line => {
-    let first
-    let last
-
-    for (let i = 0; i <= line.length; i++) {
-      const num = parseInt(line[i], 10)
-      const digitAtIndex = !isNaN(num)
-        ? num
-        : getNamedDigitsAtIndex(line, i)
-
-      // console.log({ num, digitAtIndex, first, last })
-
-      if (digitAtIndex) {
-        if (!first) {
-          first = digitAtIndex
-        } else {
-          last = digitAtIndex
-        }
-      }
-    }
-
-    if (!last) {
-      last = first
-    }
-
-    return parseInt(`${first}${last}`, 10) || 0
-  })
-}
-
-function getNamedDigitsAtIndex (line, index) {
-  const restOfLine = line.slice(index)
-
-  for (const namedDigit of wordDigits) {
-    if (restOfLine.startsWith(namedDigit)) {
-      return wordDigits.indexOf(namedDigit) + 1
-    }
+  const numberMappings = {
+    one: 'one1one',
+    two: 'two2two',
+    three: 'three3three',
+    four: 'four4four',
+    five: 'five5five',
+    six: 'six6six',
+    seven: 'seven7seven',
+    eight: 'eight8eight',
+    nine: 'nine9nine'
   }
-  return false
+
+  let sum = 0
+
+  for (let line of input) {
+    for (const num of Object.keys(numberMappings)) {
+      line = line.replaceAll(num, numberMappings[num])
+    }
+    const digits = line.split('').filter(el => !isNaN(parseInt(el))).join('')
+    const first = parseInt(digits[0])
+    const last = parseInt(digits[digits.length - 1])
+
+    sum += parseInt(`${first}${last}`)
+  }
+  return sum
 }
 
 // console.log(this.partTwo('input.txt'))
